@@ -9,7 +9,7 @@ export async function queryAgentCharts(params) {
   return runTimeSeriesCharts({
     collection: agentDataCollection(),
     chartRegistry: AGENT_CHARTS,
-    match: { agentName: params.agentName },
+    match: { agentId: params.agentId },
     ...params,
   })
 }

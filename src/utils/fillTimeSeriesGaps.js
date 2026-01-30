@@ -35,7 +35,7 @@ export function fillTimeSeriesGaps({ series, interval, skipDays, startDate, endD
   while (current <= endDate) {
     const isoDate = formatISO(current, { representation: 'date' })
     // Skip skipDays if skipDays=false
-    if (isValidSkipDay({ date: isoDate, skipDays })) {
+    if (isValidSkipDay({ date: isoDate, skipDays, interval })) {
       current = increment(current)
       continue
     }

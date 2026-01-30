@@ -15,30 +15,31 @@ export function buildTimeSeriesPipeline({
   }, {})
 
   return [
-    { $match: match },
-    {
-      $addFields: {
-        businessDateAsDate: {
-          $dateFromString: {
-            dateString: '$businessDate',
-            format: '%Y%m%d',
-          },
-        },
-      },
-    },
     {
       $match: {
-        businessDateAsDate: {
+        ...match,
+
+        businessDate: {
           $gte: startDate,
           $lte: endDate,
         },
       },
     },
+    // {
+    //   $addFields: {
+    //     businessDateAsDate: {
+    //       $dateFromString: {
+    //         dateString: '$businessDate',
+    //         format: '%Y%m%d',
+    //       },
+    //     },
+    //   },
+    // },
     {
       $group: {
         _id: {
           $dateTrunc: {
-            date: '$businessDateAsDate',
+            date: '$businessDate',
             unit: interval,
             startOfWeek: interval === 'week' ? 'Mon' : undefined,
           },

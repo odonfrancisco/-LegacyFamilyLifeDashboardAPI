@@ -1,5 +1,5 @@
 export function buildAgentTimeSeriesPipeline({
-  agentName,
+  agentId,
   charts, // array of chart configs
   interval,
   startDate,
@@ -14,7 +14,7 @@ export function buildAgentTimeSeriesPipeline({
   }, {})
 
   return [
-    { $match: { agentName } },
+    { $match: { agentId } },
     {
       $addFields: {
         businessDateAsDate: {

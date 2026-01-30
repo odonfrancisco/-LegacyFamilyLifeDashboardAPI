@@ -3,7 +3,7 @@ import { agentDataCollection, companyDataCollection } from './collections.js'
 export async function initIndexes() {
   await agentDataCollection().createIndexes([
     {
-      key: { agentName: 1, businessDate: 1 },
+      key: { agentId: 1, businessDate: 1 },
       unique: true,
     },
     {

@@ -2,17 +2,14 @@ import { formatChartResponse } from '../utils/formatChartResponse.js'
 import { parseChartQuery } from '../utils/parseChartQuery.js'
 import { computeDateRange } from '../utils/dateRange.js'
 import { queryAgentCharts, queryCompanyCharts } from '../services/charts.service.js'
-import { formatAgentName } from '../utils/formatAgentName.js'
 
 export async function getAgentCharts(req, res, next) {
   try {
-    const { agentName: rawName } = req.params
+    const { agentId } = req.params
     const { interval, range, skipDays } = parseChartQuery(req.query)
     const { startDate, endDate } = computeDateRange(range)
 
-    const agentName = formatAgentName(rawName)
-
-    const charts = await queryAgentCharts({ agentName, interval, skipDays, startDate, endDate })
+    const charts = await queryAgentCharts({ agentId, interval, skipDays, startDate, endDate })
 
     res.json({
       message: 'validated agent charts request',
@@ -28,7 +25,7 @@ export async function getAgentCharts(req, res, next) {
 
 export async function getAgentChart(req, res, next) {
   try {
-    const { agentName } = req.params
+    const { agentId } = req.params
     const { interval, range } = parseChartQuery(req.query)
     const { startDate, endDate } = computeDateRange(range)
 
@@ -42,7 +39,7 @@ export async function getAgentChart(req, res, next) {
     res.json(
       formatChartResponse({
         entityType: 'agent',
-        entityId: agentName,
+        entityId: agentId,
         interval,
         startDate,
         endDate,

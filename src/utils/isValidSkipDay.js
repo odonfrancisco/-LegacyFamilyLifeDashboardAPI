@@ -1,6 +1,7 @@
 const VALID_SKIPS = { 0: 1, 6: 1 }
 
-export function isValidSkipDay({ date: dateStr, skipDays }) {
+export function isValidSkipDay({ interval, date: dateStr, skipDays }) {
+  if (interval !== 'day') return false
   const [y, m, d] = dateStr.split('-').map(Number)
   const date = new Date(y, m - 1, d)
 
