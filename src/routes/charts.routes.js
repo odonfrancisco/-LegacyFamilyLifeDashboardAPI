@@ -5,6 +5,7 @@ import {
   getAgentChart,
   getCompanyCharts,
   getCompanyChart,
+  getCompareCharts,
 } from '../controllers/charts.controller.js'
 
 const router = Router()
@@ -21,6 +22,6 @@ router.get('/agents/:agentId/:chartName', getAgentChart)
 router.get('/company', getCompanyCharts)
 router.get('/company/:chartName', getCompanyChart)
 
-// router.get('/:chartName', getSpecificCharts)
+router.get('/compare/:chartName', getCompareCharts)
 
 export default router

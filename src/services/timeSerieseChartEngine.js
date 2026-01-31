@@ -9,10 +9,11 @@ export async function runTimeSeriesCharts({
   startDate,
   endDate,
   skipDays,
+  groupBy,
 }) {
   // 1️⃣ Resolve requested charts
   //   const requestedCharts = chartKeys.map(k => chartRegistry[k])
-  const agentChartsArr = Object.entries(chartRegistry)
+  const chartsArr = Object.entries(chartRegistry)
 
   // 2️⃣ Expand dependencies
   //   const requiredKeys = new Set(chartKeys)
@@ -25,17 +26,18 @@ export async function runTimeSeriesCharts({
   // 3️⃣ Build & run aggregation
   const pipeline = buildTimeSeriesPipeline({
     match,
-    charts: agentChartsArr,
+    charts: chartsArr,
     interval,
     startDate,
     endDate,
+    groupBy,
   })
 
   const rawSeries = await collection.aggregate(pipeline).toArray()
 
   // 4️⃣ Fill gaps
   const filledSeries = fillTimeSeriesGaps({
-    series: rawSeries,
+    charts: rawSeries,
     interval,
     skipDays,
     startDate,
@@ -43,25 +45,18 @@ export async function runTimeSeriesCharts({
   })
 
   // 5️⃣ Compute derived metrics
-  const completeSeries = filledSeries.map(row => {
-    const computed = { ...row }
+  // const completeSeries = filledSeries.map(row => {
+  //   const computed = { ...row }
 
-    for (const [chartName, props] of agentChartsArr) {
-      if (!props.compute) continue
-      computed[chartName] = props.compute(row)
-    }
-    return computed
-  })
+  //   for (const [chartName, props] of chartsArr) {
+  //     if (!props.compute) continue
+  //     computed[chartName] = props.compute(row)
+  //   }
+  //   return computed
+  // })
 
   return {
     interval,
-    charts: agentChartsArr.map(([chartKey]) => ({
-      name: chartKey,
-      // series: rawSeries.map(row => ({
-      series: completeSeries.map(row => ({
-        date: row.date,
-        value: row[chartKey] || 0,
-      })),
-    })),
+    charts: filledSeries,
   }
 }

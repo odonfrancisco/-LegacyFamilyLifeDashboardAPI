@@ -22,6 +22,15 @@ export async function queryCompanyCharts(params) {
   })
 }
 
+export async function queryCompareCharts(params) {
+  return runTimeSeriesCharts({
+    collection: agentDataCollection(),
+    chartRegistry: [AGENT_CHARTS[params.chartName]],
+    groupBy: 'agentId',
+    ...params,
+  })
+}
+
 // export async function queryAgentCharts({ agentName, interval, startDate, endDate }) {
 //   const agentChartsArr = Object.entries(AGENT_CHARTS)
 

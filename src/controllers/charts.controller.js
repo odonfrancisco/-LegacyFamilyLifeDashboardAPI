@@ -1,7 +1,11 @@
 import { formatChartResponse } from '../utils/formatChartResponse.js'
 import { parseChartQuery } from '../utils/parseChartQuery.js'
 import { computeDateRange } from '../utils/dateRange.js'
-import { queryAgentCharts, queryCompanyCharts } from '../services/charts.service.js'
+import {
+  queryAgentCharts,
+  queryCompanyCharts,
+  queryCompareCharts,
+} from '../services/charts.service.js'
 
 export async function getAgentCharts(req, res, next) {
   try {
@@ -73,6 +77,26 @@ export async function getCompanyCharts(req, res, next) {
 export async function getCompanyChart(req, res, next) {
   try {
     res.json({ message: 'getCompanyChart not implemented' })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export async function getCompareCharts(req, res, next) {
+  try {
+    const { chartName } = req.params
+    const { interval, range, skipDays } = parseChartQuery(req.query)
+    const { startDate, endDate } = computeDateRange(range)
+
+    const charts = await queryCompareCharts({ chartName, interval, skipDays, startDate, endDate })
+
+    res.json({
+      message: 'validated charts request',
+      interval,
+      startDate,
+      endDate,
+      charts,
+    })
   } catch (err) {
     next(err)
   }

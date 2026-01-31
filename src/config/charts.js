@@ -1,51 +1,19 @@
-// const BASE_CHARTS = [
-//   {
-//     name: 'Dials',
-//     metricPath: 'data.dials.total',
-//     aggregation: 'sum',
-//   },
-//   {
-//     name: 'Manual Dials',
-//     metricPath: 'data.dials.manual',
-//     aggregation: 'sum',
-//   },
-//   {
-//     name: 'Inbound Dials',
-//     metricPath: 'data.dials.inbound',
-//     aggregation: 'sum',
-//   },
-
-//   {
-//     name: 'Contact To Presentation Rate',
-//     compute: row =>
-//       row.contacts > 0 ? Number(((row.presentations / row.contacts) * 100).toFixed(2)) : 0,
-//     dependsOn: ['contacts', 'presentations'],
-//   },
-// ]
-
 const BASE_CHARTS = {
+  premium: {
+    aggregation: { $sum: '$data.sales.premium' },
+  },
+  sales: {
+    aggregation: { $sum: '$data.sales.total' },
+  },
+  dials: {
+    aggregation: { $sum: '$data.dials.total' },
+  },
   contacts: {
     aggregation: { $sum: '$data.contacts.total' },
   },
   presentations: {
     aggregation: { $sum: '$data.presentations.total' },
   },
-  sales: {
-    aggregation: { $sum: '$data.sales.total' },
-  },
-  premium: {
-    aggregation: { $sum: '$data.sales.premium' },
-  },
-  dials: {
-    aggregation: { $sum: '$data.dials.total' },
-  },
-  manualDials: {
-    aggregation: { $sum: '$data.dials.manual' },
-  },
-  inboundDials: {
-    aggregation: { $sum: '$data.dials.inbound' },
-  },
-
   contactToPresentationRate: {
     compute: row =>
       row.contacts > 0 ? Number(((row.presentations / row.contacts) * 100).toFixed(2)) : 0,
@@ -56,6 +24,12 @@ const BASE_CHARTS = {
   },
   contactToCloseRate: {
     compute: row => (row.contacts > 0 ? Number(((row.sales / row.contacts) * 100).toFixed(2)) : 0),
+  },
+  manualDials: {
+    aggregation: { $sum: '$data.dials.manual' },
+  },
+  inboundDials: {
+    aggregation: { $sum: '$data.dials.inbound' },
   },
 }
 
