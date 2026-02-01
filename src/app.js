@@ -18,7 +18,7 @@ app.use(errorHandler)
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://legacy-family-life-dashboard.vercel.app'],
   }),
 )
 
